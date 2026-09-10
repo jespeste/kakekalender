@@ -45,6 +45,12 @@ function requireAdmin(req, res, next) {
   return res.status(401).json({ error: 'Krever admin-innlogging' });
 }
 
+function asyncHandler(fn) {
+  return (req, res, next) => {
+    fn(req, res, next).catch(next);
+  };
+}
+
 function validEntryBody(body) {
   return (
     body &&
@@ -81,34 +87,59 @@ app.post('/api/logout', (req, res) => {
   res.json({ isAdmin: false });
 });
 
-app.get('/api/entries', (req, res) => {
-  res.json(db.listEntries());
-});
+app.get(
+  '/api/entries',
+  asyncHandler(async (req, res) => {
+    res.json(await db.listEntries());
+  })
+);
 
-app.post('/api/entries', requireAdmin, (req, res) => {
-  if (!validEntryBody(req.body)) {
-    return res.status(400).json({ error: 'Dato og navn er påkrevd' });
-  }
-  res.status(201).json(db.addEntry(req.body));
-});
+app.post(
+  '/api/entries',
+  requireAdmin,
+  asyncHandler(async (req, res) => {
+    if (!validEntryBody(req.body)) {
+      return res.status(400).json({ error: 'Dato og navn er påkrevd' });
+    }
+    res.status(201).json(await db.addEntry(req.body));
+  })
+);
 
-app.put('/api/entries/:id', requireAdmin, (req, res) => {
-  if (!validEntryBody(req.body)) {
-    return res.status(400).json({ error: 'Dato og navn er påkrevd' });
-  }
-  const entry = db.updateEntry(req.params.id, req.body);
-  if (!entry) return res.status(404).json({ error: 'Fant ikke oppføring' });
-  res.json(entry);
-});
+app.put(
+  '/api/entries/:id',
+  requireAdmin,
+  asyncHandler(async (req, res) => {
+    if (!validEntryBody(req.body)) {
+      return res.status(400).json({ error: 'Dato og navn er påkrevd' });
+    }
+    const entry = await db.updateEntry(req.params.id, req.body);
+    if (!entry) return res.status(404).json({ error: 'Fant ikke oppføring' });
+    res.json(entry);
+  })
+);
 
-app.delete('/api/entries/:id', requireAdmin, (req, res) => {
-  const ok = db.deleteEntry(req.params.id);
-  if (!ok) return res.status(404).json({ error: 'Fant ikke oppføring' });
-  res.status(204).end();
-});
+app.delete(
+  '/api/entries/:id',
+  requireAdmin,
+  asyncHandler(async (req, res) => {
+    const ok = await db.deleteEntry(req.params.id);
+    if (!ok) return res.status(404).json({ error: 'Fant ikke oppføring' });
+    res.status(204).end();
+  })
+);
 
 app.use(express.static(path.join(__dirname, '..', 'public')));
 
-app.listen(PORT, () => {
-  console.log(`Kakekalender kjører på port ${PORT}`);
+// eslint-disable-next-line no-unused-vars
+app.use((err, req, res, next) => {
+  console.error(err);
+  res.status(500).json({ error: 'Noe gikk galt' });
 });
+
+if (require.main === module) {
+  app.listen(PORT, () => {
+    console.log(`Kakekalender kjører på port ${PORT}`);
+  });
+}
+
+module.exports = app;
