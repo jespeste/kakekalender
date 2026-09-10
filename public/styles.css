@@ -1,0 +1,169 @@
+:root {
+  --pink: #f6a5c0;
+  --pink-dark: #e0759e;
+  --cream: #fffaf3;
+  --text: #3a2e2e;
+  --muted: #8a7b7b;
+  --border: #f0d9e2;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  background: var(--cream);
+  color: var(--text);
+}
+
+.topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 1.5rem;
+  background: var(--pink);
+  color: white;
+}
+
+.topbar h1 {
+  margin: 0;
+  font-size: 1.4rem;
+}
+
+main {
+  max-width: 640px;
+  margin: 2rem auto;
+  padding: 0 1rem;
+}
+
+.card {
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1.25rem;
+  margin-bottom: 1.5rem;
+}
+
+.card h2 {
+  margin-top: 0;
+  font-size: 1.1rem;
+}
+
+form label {
+  display: block;
+  font-size: 0.85rem;
+  color: var(--muted);
+  margin-bottom: 0.75rem;
+}
+
+form input {
+  display: block;
+  width: 100%;
+  margin-top: 0.25rem;
+  padding: 0.5rem;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  font-size: 1rem;
+}
+
+.form-actions {
+  display: flex;
+  gap: 0.5rem;
+}
+
+button {
+  background: var(--pink-dark);
+  color: white;
+  border: none;
+  border-radius: 6px;
+  padding: 0.5rem 1rem;
+  font-size: 0.95rem;
+  cursor: pointer;
+}
+
+button.secondary {
+  background: transparent;
+  color: var(--pink-dark);
+  border: 1px solid var(--pink-dark);
+}
+
+button.small {
+  padding: 0.25rem 0.6rem;
+  font-size: 0.8rem;
+}
+
+button.danger {
+  background: #c94f4f;
+}
+
+#entry-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.entry {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 0.75rem 1rem;
+  margin-bottom: 0.6rem;
+}
+
+.entry-info .date {
+  font-weight: 600;
+  color: var(--pink-dark);
+  text-transform: capitalize;
+}
+
+.entry-info .name {
+  font-size: 1.05rem;
+}
+
+.entry-info .note {
+  color: var(--muted);
+  font-size: 0.85rem;
+}
+
+.entry-actions {
+  display: flex;
+  gap: 0.4rem;
+  flex-shrink: 0;
+}
+
+.hidden {
+  display: none !important;
+}
+
+.error {
+  color: #c94f4f;
+  font-size: 0.85rem;
+}
+
+#auth-area button {
+  background: white;
+  color: var(--pink-dark);
+}
+
+.modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal-content {
+  background: white;
+  border-radius: 12px;
+  padding: 1.5rem;
+  width: 90%;
+  max-width: 360px;
+}

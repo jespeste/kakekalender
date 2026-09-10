@@ -1,0 +1,15 @@
+services:
+  kakekalender:
+    build: .
+    ports:
+      - "3000:3000"
+    environment:
+      ADMIN_USERNAME: ${ADMIN_USERNAME:-fernande}
+      ADMIN_PASSWORD: ${ADMIN_PASSWORD:?Sett ADMIN_PASSWORD i .env}
+      SESSION_SECRET: ${SESSION_SECRET:?Sett SESSION_SECRET i .env}
+    volumes:
+      - kakekalender-data:/app/data
+    restart: unless-stopped
+
+volumes:
+  kakekalender-data:
